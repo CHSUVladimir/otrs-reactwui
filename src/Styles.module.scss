@@ -1,0 +1,145 @@
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }           
+    to {
+        transform: rotate(-360deg);
+    }    
+}
+
+.rotatePanel{
+    all:unset;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    span{
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    .Rotate {
+        animation: spin 2s linear 0s infinite;
+        width: 3em;
+        height: 3em;
+        border-radius: 2em;
+        background: conic-gradient(#0D9CBB,#fff);
+        position: relative;
+        div {
+            width: 1.8em;
+            height: 1.8em;
+            border-radius: 1.8em;
+            background: #fff;
+            position: absolute;
+            top: calc(50% - 0.95em);
+            left: calc(50% - 0.95em);
+        }
+    }
+}
+
+.typeBlock{       
+    width: calc(100% - 1.5em); 
+    min-width: 12em;
+    height: 7.15em; 
+    display: inline-table;
+    border-radius: 0.5em;    
+    margin-left: 0.75em;   
+    margin-bottom: 0.75em;
+    position: relative;
+    padding-left: 0.5em;
+    cursor: pointer;
+    max-width: 20em;
+    user-select: none;
+    div{
+      height: 100%;
+      font-size: 3em;
+      text-align: center;
+      display: table-row;
+      font-weight: bold;    
+    }
+    h2{      
+      margin: unset;
+      font-size: 1.5em !important;
+      display: table-row;
+      color: #fff !important;
+      font-weight: bold;
+      text-align: center;
+      &::before{
+        content: "•";
+        font-size: 3.5em;       
+        position: absolute;
+        display: inline-block;
+        top: -0.67em;
+        left: -0.17em;
+      }
+    }
+
+    &:hover{
+      h2{
+        &::before{
+          color:chartreuse;
+        }
+      }
+    }
+    &:active{
+        position: relative;
+        top:2px;
+        opacity: 0.5;
+    }
+  }
+
+  .infoBlock{
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    background-color: #35c1db;    
+    box-shadow: 0 2px 2px rgba(0,0,0,.05), inset 0 -2px 0 rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.3);
+    &:hover {
+      background-color: #41cae4;
+    }        
+  }
+
+  .newBlock{
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    background-color: #239fdb;
+    box-shadow: 0 2px 2px rgba(0,0,0,.05), inset 0 -2px 0 rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.3);
+   
+    &:hover {
+      background-color: #2ca8e4;
+    }
+  }
+
+  .successBlock{
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    background-color: #48c253;    
+    box-shadow: 0 2px 2px rgba(0,0,0,.05), inset 0 -2px 0 rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.3);
+    &:hover {
+      background-color: #55cc60;
+    }
+  }
+
+  .advBlock{
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    background-color: #edcd1e;    
+    box-shadow: 0 2px 2px rgba(0,0,0,.05), inset 0 -2px 0 rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.3);
+    &:hover {
+      background-color: #f9d92c;
+    }
+  }
+
+  .typeOfTickets{
+    width: calc(100% - 6.25em);
+    display: flex;
+    margin-left: 4em;
+    box-shadow: 0 2px 0 rgba(90,97,105,.11),0 4px 8px rgba(90,97,105,.12),0 10px 10px rgba(90,97,105,.06),0 7px 70px rgba(90,97,105,.1);
+    border-radius: .5em;
+    border: 1px solid rgba(0,0,0,.125);
+    margin-bottom: 1.25em;
+    padding-right: .75em;
+    min-width: 14em;
+    justify-content: center;
+    padding-top: 0.75em;
+    flex-wrap: wrap;
+}
