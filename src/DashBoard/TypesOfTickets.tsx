@@ -2,25 +2,10 @@ import React from 'react';
 import styles from '../Styles.module.scss';
 import TicketGroup from './TicketGroup';
 import { IDynamicFieldTS, OTRSSession, OTRSTicketSearch } from '@CHSUVladimir/otrs-connector';
+import OTRSConnector from '../OTRS/OTRSConnector';
 
 export interface ITypeOfTickets{
-    /** Пользователь с кем работает система*/
-    UserName:string;
-    /**Обычные заявки */
-    StandartTIDs:string[];
-    /**Объявления*/
-    AdversmentTIDs:string[];
-    /** Статусы заявок которые не закрыты*/
-    OpenTicketStates:string[];
-    /** Статусы заявок которые закрыты*/
-    CloseTicketStates:string[];
-    /** поля для работы с объявлениями*/
-    AdvFields:{
-        /**Название поля начала действия объявления */
-        Start:string;
-        /**Название поля для окончания действия объявления*/
-        End:string;
-    }
+    
 }
 
 
@@ -62,7 +47,7 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
         },
     };
 
-    public render(): React.ReactNode {        
+    public render(): React.ReactNode {
         return (
             <div className={styles.typeOfTickets}>
                 <TicketGroup 
@@ -100,9 +85,16 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
     }
 
     componentDidMount(): void {
-        this.Reload();
+        this.Reload().then();
     }
 
+    componentDidUpdate(prevProps: Readonly<ITypeOfTickets>, prevState: Readonly<IState>, snapshot?: any): void {
+        //this.Reload();
+    }
+
+    /**
+     * производит перезагрузку данных
+     */
     private async Reload():Promise<void>{        
         let lat =this.LoadAllTickets();
         let lot =this.LoadOpenTickets();
@@ -115,36 +107,41 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
         await lad;
       }
 
-      private async LoadAllTickets():Promise<void>{
+      /**
+       * @async метод получения всех заявок поданных пользователем
+       */
+      private async LoadAllTickets():Promise<void>{  
+        
         try{
-            const ts = new OTRSTicketSearch();
-            const st =ts.SearchTerms;
-            st.SessionID = OTRSSession.SessionId();
-            st.CustomerUserLogin =[this.props.UserName];
-            st.TypeIDs = this.props.StandartTIDs;
+            const ts = new OTRSTicketSearch(); 
+            const st =ts.SearchTerms;   
+            st.SessionID = OTRSSession.SessionId();  
+            st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
+            st.TypeIDs = OTRSConnector.StandartBids;
             st.Limit=10000;
-            const res = await ts.Search();            
+            const res = await ts.Search(); 
             const ar = res as number[];
-            if(ar.length){
+            if(ar && ar.length){
                 this.setState({ALL: {
-                        load:false,
-                        count:ar.length,
-                    }});
+                    load:false,
+                    count:ar.length,
+                }});
             }else{
                 const tid =res as number;
-               if(!isNaN(tid)){
-                this.setState({ALL:{
+                if(!isNaN(tid)){
+                    this.setState({ALL:{
                         load:false,
                         count:1
                     }});
-               }else{
-                this.setState({ALL:{
+                }else{
+                    this.setState({ALL:{
                         load:false,
                         count:0
                     }});
-               }
-            }
-        }catch{
+                }
+        }
+        }catch(error){
+            console.error(error);
             this.setState({ALL:{
                     load:false,
                     count:NaN
@@ -152,15 +149,18 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
         }
       }
 
+      /**
+       * @async метод получения всех заявок находящихся в обработке
+       */
       private async LoadOpenTickets():Promise<void>{
         try{
             const ts = new OTRSTicketSearch();
             const st =ts.SearchTerms;
             st.SessionID = OTRSSession.SessionId();
-            st.CustomerUserLogin =[this.props.UserName];
-            st.TypeIDs = this.props.StandartTIDs;
+            st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
+            st.TypeIDs = OTRSConnector.StandartBids;
             st.Limit=10000;
-            st.StateIDs =this.props.OpenTicketStates;
+            st.StateIDs =OTRSConnector.Settings.OpenTicketStates;
             const res = await ts.Search();            
             const ar = res as number[];
             if(ar.length){
@@ -191,15 +191,18 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
         }
       }
 
+      /**
+       * @async метод получения всех заявок, которые были выполены для пользователя
+       */
       private async LoadSuccessTickets():Promise<void>{
         try{
             const ts = new OTRSTicketSearch();
             const st =ts.SearchTerms;
             st.SessionID = OTRSSession.SessionId();
-            st.CustomerUserLogin =[this.props.UserName];
-            st.TypeIDs = this.props.StandartTIDs;
+            st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
+            st.TypeIDs = OTRSConnector.StandartBids;
             st.Limit=10000;
-            st.StateIDs =this.props.CloseTicketStates;
+            st.StateIDs =OTRSConnector.Settings.CloseTicketStates;
             const res = await ts.Search();            
             const ar = res as number[];
             if(ar.length){
@@ -230,6 +233,9 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
         }
       }
 
+      /**
+       * Принудительная перезагрузка данных 
+       */
       public async ReloadInternal():Promise<void>{
         await this.Reload();
       }
@@ -248,24 +254,32 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
         return`${D.getFullYear()}-${month}-${day} ${hour}:${minutes}:00`;
       }
 
+      /**
+       * Набор условий по динамическим полям для отбора объявлений на текущий день
+       * @returns {IDynamicFieldTS[]} Набор условий по динамическим полям для отбора объявлений на текущий день
+       */
       private DynamicFieldsTD():IDynamicFieldTS[]{
         const res:IDynamicFieldTS[] =[];
-        const sdf:IDynamicFieldTS={ Name:this.props.AdvFields.Start};
+        const sdf:IDynamicFieldTS={ Name:OTRSConnector.Settings.AdvFields.Start};
         const dt = new Date();
         const edt=new Date();
         edt.setHours(24); 
         edt.setMinutes(0);
         sdf.SmallerThanEquals=this.DateStr(edt);
         res.push(sdf);
-        const edf:IDynamicFieldTS={ Name:this.props.AdvFields.End};      
+        const edf:IDynamicFieldTS={ Name:OTRSConnector.Settings.AdvFields.End};      
         edf.GreaterThanEquals=this.DateStr(dt);
         res.push(edf);
         return res;
       }
 
+      /**
+       * Набор условий по динамическим полям для отбора объявлений на текущую неделю
+       * @returns {IDynamicFieldTS[]}  Набор условий по динамическим полям для отбора объявлений на текущую неделю
+       */
       private DynamicFieldsW():IDynamicFieldTS[]{
         const res:IDynamicFieldTS[] =[];
-        const sdf:IDynamicFieldTS={ Name:this.props.AdvFields.Start};
+        const sdf:IDynamicFieldTS={ Name:OTRSConnector.Settings.AdvFields.Start};
         const dt = new Date();
         const edt=new Date();
         edt.setHours(24); 
@@ -273,34 +287,45 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
         edt.setDate(edt.getDate()+6);
         sdf.SmallerThanEquals=this.DateStr(edt);
         res.push(sdf);
-        const edf:IDynamicFieldTS={ Name:this.props.AdvFields.End};      
+        const edf:IDynamicFieldTS={ Name:OTRSConnector.Settings.AdvFields.End};      
         edf.GreaterThanEquals=this.DateStr(dt);
         res.push(edf);
         return res;
       }
 
+      /**
+       * Загрузка объявлений действующих на текущий день
+       * @returns {Promise<number|number[]>} идентификаторы заявок
+       */
       private async LoadToDay():Promise<number|number[]>{
         const ts = new OTRSTicketSearch();
         const st =ts.SearchTerms;
         st.SessionID = OTRSSession.SessionId();
-        st.CustomerUserLogin =[this.props.UserName];
-        st.TypeIDs =this.props.AdversmentTIDs;
+        st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
+        st.TypeIDs =OTRSConnector.AdversmentTypes;
         st.Limit=10000;
         st.DynamicField=this.DynamicFieldsTD();
         return await ts.Search();
       }
 
+      /**
+       * Загрузка набора объявлений на текущую неделю
+       * @returns {Promise<number|number[]>} идентификаторы заявок
+       */
       private async LoadToWeek():Promise<number|number[]>{
         const ts = new OTRSTicketSearch();
         const st =ts.SearchTerms;
         st.SessionID = OTRSSession.SessionId();
-        st.CustomerUserLogin =[this.props.UserName];
-        st.TypeIDs =this.props.AdversmentTIDs;
+        st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
+        st.TypeIDs =OTRSConnector.AdversmentTypes;
         st.Limit=10000;
         st.DynamicField=this.DynamicFieldsW();
         return await ts.Search();
       }
 
+      /** 
+       * Производится загрузка всех объявлений на ближайшую неделю и на сегодня 
+       * */
       private async LoadAdversment():Promise<void>{
         let td =0, tw=0;
         try{

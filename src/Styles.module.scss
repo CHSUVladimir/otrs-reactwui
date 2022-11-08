@@ -143,3 +143,18 @@
     padding-top: 0.75em;
     flex-wrap: wrap;
 }
+
+.menu{
+  display: inline-block;
+  width: 3.75em;
+  background-color: #0072c6;
+  top: 11.5em;
+  position: fixed;
+  height: calc(100vh - 11.75em);
+  .icon{
+    display: block;
+    width: 3em;
+    margin-left: 0.35em;
+    cursor: pointer;
+  }
+}

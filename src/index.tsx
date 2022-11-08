@@ -1,49 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import './index.css';
-import App, { IDialogs, IOTRS } from './App';
 import reportWebVitals from './reportWebVitals';
+import OTRSConnector from './OTRS/OTRSConnector';
+import OTRSDisplay from './OTRS/OTRSDisplay';
 
 export {default as AwaitSpinner} from './Elements/AwaitSpinner';
 export type {TicketGroupType, ITicketGroup} from './DashBoard/TicketGroup';
+export type { 
+  IDivToSafe, IElementToSafe, IHeaderSafe, IInputToSafe, ILabelToSafe, IPanel, IPanelProps, IPanelState, IQueue, IQueueForm,
+  IQueueTree, ISafeElement, ISelectOption, ISelectToSafe, IStep, ITextAreaToSafe, IxTickToSafe, PrimitiveType, ElementsType, Parameters,
+
+} from './Queues/index';
 export {default as TicketGroup} from './DashBoard/TicketGroup';
 export {default as OTRSWUI} from './App';
+export {default as OTRSConnector} from './OTRS/OTRSConnector'
 
 
-const drel = document.createElement('div');
-document.body.appendChild(drel);
-const dialog = ReactDOM.createRoot(drel);
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-function OTRSConnector(o:IOTRS){
-  o.Dialogs=setDialogsSettings(o);
-  root.render(
-    <React.StrictMode>
-      <App 
-        ExternalAwait={o.ExternalAwait} 
-        URLS={o.URLS} 
-        OTRSSession={o.OTRSSession}
-        OTRSSettings={o.OTRSSettings}
-        Dialogs={o.Dialogs}
-        MenuSettings={o.MenuSettings}
-      />
-    </React.StrictMode>
-  );
-}
-
-function setDialogsSettings(o:IOTRS):IDialogs{
-  o.Dialogs=o.Dialogs??{
-    MenuRoot:dialog
-  };
-  o.Dialogs.MenuRoot=o.Dialogs.MenuRoot??dialog;
-  return o.Dialogs;
-}
-
-//Object.defineProperties(OTRS, { UserName: { value:(u:string)=>{UserName=u} } });
-
-Object.defineProperty(global,'OTRSConnector',{value:(OTRS:IOTRS)=>OTRSConnector(OTRS), writable:false});
+Object.defineProperty(global,'OTRSDisplay',{value:OTRSDisplay});
+Object.defineProperty(global,'OTRSConnector',{value:OTRSConnector});//(OTRS:IOTRS)=>OTRSConnector(OTRS), writable:false});
 
 
 
