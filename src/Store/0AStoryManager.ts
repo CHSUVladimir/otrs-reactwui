@@ -1,8 +1,8 @@
-import AdversmentToDayIdsStore from "./AdversmentToDayIdsStore";
-import AdversmentToWeekIdsStore from "./AdversmentToWeekIdsStore";
-import TicketAllIdsStore from "./TicketAllIdsStore";
-import TicketOpenIdsStore from "./TicketOpenIdsStore";
-import TicketSuccessIdsStore from "./TicketSuccessIdsStore";
+import AdversmentToDayIdsStore from "./AdversmentIds/AdversmentToDayIdsStore";
+import AdversmentToWeekIdsStore from "./AdversmentIds/AdversmentToWeekIdsStore";
+import TicketAllIdsStore from "./TicketsIds/TicketAllIdsStore";
+import TicketOpenIdsStore from "./TicketsIds/TicketOpenIdsStore";
+import TicketSuccessIdsStore from "./TicketsIds/TicketSuccessIdsStore";
 
 export default class StoryManager{
     /** Все идентификаторы заявок */

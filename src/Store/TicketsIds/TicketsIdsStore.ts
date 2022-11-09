@@ -1,6 +1,6 @@
 import { OTRSSession, OTRSTicketSearch } from "@CHSUVladimir/otrs-connector";
-import OTRSConnector from "../OTRS/OTRSConnector";
-import Store from "./Store";
+import OTRSConnector from "../../OTRS/OTRSConnector";
+import Store from "../Store";
 
 export default class TicketIdsStore extends Store<number>{
 
