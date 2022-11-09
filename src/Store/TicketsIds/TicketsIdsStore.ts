@@ -1,5 +1,5 @@
 import { OTRSSession, OTRSTicketSearch } from "@CHSUVladimir/otrs-connector";
-import OTRSConnector from "../../OTRS/OTRSConnector";
+import ShadowOTRSConnector from "../../OTRS/ShadowOTRSConnector";
 import Store from "../Store";
 
 export default class TicketIdsStore extends Store<number>{
@@ -9,19 +9,19 @@ export default class TicketIdsStore extends Store<number>{
     protected setAllSeachTerms():void{
         const st =this.ticketSearch.SearchTerms;   
         st.SessionID = OTRSSession.SessionId();  
-        st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
-        st.TypeIDs = OTRSConnector.StandartBids;
+        st.CustomerUserLogin =[ShadowOTRSConnector.Session.CustomerUserLogin];
+        st.TypeIDs = ShadowOTRSConnector.StandartBids;
         st.Limit=10000;
     }
 
     protected setOpenSeachTerms():void{
         this.setAllSeachTerms();
-        this.ticketSearch.SearchTerms.StateIDs =OTRSConnector.Settings.OpenTicketStates;
+        this.ticketSearch.SearchTerms.StateIDs =ShadowOTRSConnector.Settings.OpenTicketStates;
     }
 
     protected setSuccessSeachTerms():void{
         this.setAllSeachTerms();
-        this.ticketSearch.SearchTerms.StateIDs =OTRSConnector.Settings.CloseTicketStates;
+        this.ticketSearch.SearchTerms.StateIDs =ShadowOTRSConnector.Settings.CloseTicketStates;
     }
 
     protected async LoadTicketIds():Promise<void>{

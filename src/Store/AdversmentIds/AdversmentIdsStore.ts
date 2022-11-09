@@ -1,5 +1,5 @@
 import { IDynamicFieldTS, OTRSSession, OTRSTicketSearch } from "@CHSUVladimir/otrs-connector";
-import OTRSConnector from "../../OTRS/OTRSConnector";
+import ShadowOTRSConnector from "../../OTRS/ShadowOTRSConnector";
 import Store from "../Store";
 
 export default class AdversmentIdsStore extends Store<number>{
@@ -28,10 +28,10 @@ export default class AdversmentIdsStore extends Store<number>{
       private setDateFieldsTerms(dt:Date, edt:Date){
         this.DateFieldsTerms=[];
         let res = this.DateFieldsTerms;        
-        const sdf:IDynamicFieldTS={ Name:OTRSConnector.Settings.AdvFields.Start};
+        const sdf:IDynamicFieldTS={ Name:ShadowOTRSConnector.Settings.AdvFields.Start};
         sdf.SmallerThanEquals=this.DateStr(edt);
         res.push(sdf);
-        const edf:IDynamicFieldTS={ Name:OTRSConnector.Settings.AdvFields.End};      
+        const edf:IDynamicFieldTS={ Name:ShadowOTRSConnector.Settings.AdvFields.End};      
         edf.GreaterThanEquals=this.DateStr(dt);
         res.push(edf);
       }
@@ -71,8 +71,8 @@ export default class AdversmentIdsStore extends Store<number>{
       private setStandartTerms():void{
         const st =this.ticketSearch.SearchTerms;   
         st.SessionID = OTRSSession.SessionId();  
-        st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
-        st.TypeIDs = OTRSConnector.AdversmentTypes;
+        st.CustomerUserLogin =[ShadowOTRSConnector.Session.CustomerUserLogin];
+        st.TypeIDs = ShadowOTRSConnector.AdversmentTypes;
         st.Limit=10000;
         st.DynamicField=this.DateFieldsTerms;
       }
