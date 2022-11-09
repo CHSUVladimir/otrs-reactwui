@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from '../Styles.module.scss';
 import TicketGroup from './TicketGroup';
-import { IDynamicFieldTS, OTRSSession, OTRSTicketSearch } from '@CHSUVladimir/otrs-connector';
-import OTRSConnector from '../OTRS/OTRSConnector';
+import StoryManager from '../Store/0AStoryManager';
 
 export interface ITypeOfTickets{
     
@@ -46,6 +45,8 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
             weekCount:0,
         },
     };
+
+    private subscribeName="TypeOfTickets";
 
     public render(): React.ReactNode {
         return (
@@ -92,6 +93,34 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
         //this.Reload();
     }
 
+    componentWillUnmount(): void {
+        this.UnSubscribe();
+    }
+
+    private UnSubscribe():void{
+        const ta = StoryManager.TicketAllIds;
+        if(!ta.NameIsUniqeSubUpd(this.subscribeName)){
+            ta.UnSubscribeToUpdate(this.subscribeName);
+        }
+        const to = StoryManager.TicketOpenIds;
+        if(!to.NameIsUniqeSubUpd(this.subscribeName)){
+            to.UnSubscribeToUpdate(this.subscribeName);
+        }
+
+        const ts = StoryManager.TicketSuccessIds;
+        if(!ts.NameIsUniqeSubUpd(this.subscribeName)){
+            ts.UnSubscribeToUpdate(this.subscribeName);
+        }
+        const atd = StoryManager.AdvTodayIds;
+        if(!atd.NameIsUniqeSubUpd(this.subscribeName)){
+            atd.UnSubscribeToUpdate(this.subscribeName);
+        }
+        const atw = StoryManager.AdvToWeekIds;
+        if(!atw.NameIsUniqeSubUpd(this.subscribeName)){
+            atw.UnSubscribeToUpdate(this.subscribeName);
+        }
+    }
+
     /**
      * производит перезагрузку данных
      */
@@ -110,36 +139,30 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
       /**
        * @async метод получения всех заявок поданных пользователем
        */
-      private async LoadAllTickets():Promise<void>{  
-        
+      private async LoadAllTickets():Promise<void>{
         try{
-            const ts = new OTRSTicketSearch(); 
-            const st =ts.SearchTerms;   
-            st.SessionID = OTRSSession.SessionId();  
-            st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
-            st.TypeIDs = OTRSConnector.StandartBids;
-            st.Limit=10000;
-            const res = await ts.Search(); 
-            const ar = res as number[];
-            if(ar && ar.length){
-                this.setState({ALL: {
+            const t = StoryManager.TicketAllIds;
+            if(t.FirstLoadStarted){
+                this.setState({ALL:{
                     load:false,
-                    count:ar.length,
+                    count:t.Count()
                 }});
             }else{
-                const tid =res as number;
-                if(!isNaN(tid)){
+                await t.FirstLoad();                
+                this.setState({ALL:{
+                    load:false,
+                    count:t.Count()
+                }});
+            }    
+            if(t.NameIsUniqeSubUpd(this.subscribeName)){
+                t.SubscribeToUpdate(this.subscribeName,()=>{
+                    const tt =StoryManager.TicketAllIds;
                     this.setState({ALL:{
                         load:false,
-                        count:1
+                        count:tt.Count()
                     }});
-                }else{
-                    this.setState({ALL:{
-                        load:false,
-                        count:0
-                    }});
-                }
-        }
+                })                    
+            }      
         }catch(error){
             console.error(error);
             this.setState({ALL:{
@@ -154,35 +177,28 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
        */
       private async LoadOpenTickets():Promise<void>{
         try{
-            const ts = new OTRSTicketSearch();
-            const st =ts.SearchTerms;
-            st.SessionID = OTRSSession.SessionId();
-            st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
-            st.TypeIDs = OTRSConnector.StandartBids;
-            st.Limit=10000;
-            st.StateIDs =OTRSConnector.Settings.OpenTicketStates;
-            const res = await ts.Search();            
-            const ar = res as number[];
-            if(ar.length){
+            const t = StoryManager.TicketOpenIds;
+            if(t.FirstLoadStarted){
                 this.setState({Open:{
                     load:false,
-                    count:ar.length
+                    count:t.Count()
                 }});
             }else{
-                const tid =res as number;
-                if(!isNaN(tid)){
-                    this.setState({Open:{
-                        load:false,
-                        count:1
-                    }});
-                }else{
-                    this.setState({Open:{
-                        load:false,
-                        count:0
-                    }});
-                }
+                await t.FirstLoad();
+                this.setState({Open:{
+                    load:false,
+                    count:t.Count()
+                }});               
             }
-
+            if(t.NameIsUniqeSubUpd(this.subscribeName)){
+                t.SubscribeToUpdate(this.subscribeName,()=>{
+                    const tt =StoryManager.TicketOpenIds;
+                    this.setState({Open:{
+                        load:false,
+                        count:tt.Count()
+                    }});
+                })                    
+            }
         }catch{
             this.setState({Open:{
                 load:false,
@@ -196,35 +212,28 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
        */
       private async LoadSuccessTickets():Promise<void>{
         try{
-            const ts = new OTRSTicketSearch();
-            const st =ts.SearchTerms;
-            st.SessionID = OTRSSession.SessionId();
-            st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
-            st.TypeIDs = OTRSConnector.StandartBids;
-            st.Limit=10000;
-            st.StateIDs =OTRSConnector.Settings.CloseTicketStates;
-            const res = await ts.Search();            
-            const ar = res as number[];
-            if(ar.length){
+            const t = StoryManager.TicketSuccessIds;
+            if(t.FirstLoadStarted){
                 this.setState({Success:{
                     load:false,
-                    count:ar.length
+                    count:t.Count()
                 }});
             }else{
-                const tid =res as number;
-                if(!isNaN(tid)){
-                    this.setState({Success:{
-                        load:false,
-                        count:1
-                    }});
-                }else{
-                    this.setState({Success:{
-                        load:false,
-                        count:0
-                    }});
-                }
+                await t.FirstLoad();
+                this.setState({Success:{
+                    load:false,
+                    count:t.Count()
+                }}); 
             }
-
+            if(t.NameIsUniqeSubUpd(this.subscribeName)){
+                t.SubscribeToUpdate(this.subscribeName,()=>{
+                    const tt =StoryManager.TicketSuccessIds;
+                    this.setState({Success:{
+                        load:false,
+                        count:tt.Count()
+                    }});
+                })                    
+            }           
         }catch{
             this.setState({Success:{
                 load:false,
@@ -240,87 +249,47 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
         await this.Reload();
       }
 
-      /**
-     * Преобразует дату в строку необходимую для поиска по датам в формате yyyy-MM-dd HH:mm:ss
-     * @param {Date} D дата для преобразования
-     * @returns {string} строку даты в формате yyyy-MM-dd HH:mm:ss
-     */
-     private DateStr(D:Date):string{
-        var day=D.getDate()>10?D.getDate():"0"+D.getDate();
-        var month=D.getMonth()+1<10?"0"+(D.getMonth()-1+2):(D.getMonth()-1+2);
-        var hour=D.getHours()>9?D.getHours():"0"+D.getHours();
-        var minutes=D.getMinutes()>9?D.getMinutes():"0"+D.getMinutes();
-  
-        return`${D.getFullYear()}-${month}-${day} ${hour}:${minutes}:00`;
-      }
-
-      /**
-       * Набор условий по динамическим полям для отбора объявлений на текущий день
-       * @returns {IDynamicFieldTS[]} Набор условий по динамическим полям для отбора объявлений на текущий день
-       */
-      private DynamicFieldsTD():IDynamicFieldTS[]{
-        const res:IDynamicFieldTS[] =[];
-        const sdf:IDynamicFieldTS={ Name:OTRSConnector.Settings.AdvFields.Start};
-        const dt = new Date();
-        const edt=new Date();
-        edt.setHours(24); 
-        edt.setMinutes(0);
-        sdf.SmallerThanEquals=this.DateStr(edt);
-        res.push(sdf);
-        const edf:IDynamicFieldTS={ Name:OTRSConnector.Settings.AdvFields.End};      
-        edf.GreaterThanEquals=this.DateStr(dt);
-        res.push(edf);
-        return res;
-      }
-
-      /**
-       * Набор условий по динамическим полям для отбора объявлений на текущую неделю
-       * @returns {IDynamicFieldTS[]}  Набор условий по динамическим полям для отбора объявлений на текущую неделю
-       */
-      private DynamicFieldsW():IDynamicFieldTS[]{
-        const res:IDynamicFieldTS[] =[];
-        const sdf:IDynamicFieldTS={ Name:OTRSConnector.Settings.AdvFields.Start};
-        const dt = new Date();
-        const edt=new Date();
-        edt.setHours(24); 
-        edt.setMinutes(0);
-        edt.setDate(edt.getDate()+6);
-        sdf.SmallerThanEquals=this.DateStr(edt);
-        res.push(sdf);
-        const edf:IDynamicFieldTS={ Name:OTRSConnector.Settings.AdvFields.End};      
-        edf.GreaterThanEquals=this.DateStr(dt);
-        res.push(edf);
-        return res;
-      }
-
+     
       /**
        * Загрузка объявлений действующих на текущий день
        * @returns {Promise<number|number[]>} идентификаторы заявок
        */
-      private async LoadToDay():Promise<number|number[]>{
-        const ts = new OTRSTicketSearch();
-        const st =ts.SearchTerms;
-        st.SessionID = OTRSSession.SessionId();
-        st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
-        st.TypeIDs =OTRSConnector.AdversmentTypes;
-        st.Limit=10000;
-        st.DynamicField=this.DynamicFieldsTD();
-        return await ts.Search();
+      private async LoadToDay():Promise<number>{
+        const t = StoryManager.AdvTodayIds;
+        let res=-1;
+        if(t.FirstLoadStarted){
+            res= t.Count();
+        }else{
+            await t.FirstLoad();
+            res= t.Count();
+        }
+        if(t.NameIsUniqeSubUpd(this.subscribeName)){
+            t.SubscribeToUpdate(this.subscribeName,()=>{
+               this.LoadAdversment();
+            })                    
+        } 
+        return res; 
       }
 
       /**
        * Загрузка набора объявлений на текущую неделю
        * @returns {Promise<number|number[]>} идентификаторы заявок
        */
-      private async LoadToWeek():Promise<number|number[]>{
-        const ts = new OTRSTicketSearch();
-        const st =ts.SearchTerms;
-        st.SessionID = OTRSSession.SessionId();
-        st.CustomerUserLogin =[OTRSConnector.Session.CustomerUserLogin];
-        st.TypeIDs =OTRSConnector.AdversmentTypes;
-        st.Limit=10000;
-        st.DynamicField=this.DynamicFieldsW();
-        return await ts.Search();
+      private async LoadToWeek():Promise<number>{
+        const t = StoryManager.AdvToWeekIds;
+        let res=NaN;
+        if(t.FirstLoadStarted){
+            res= t.Count();
+        }else{
+            await t.FirstLoad();
+            res= t.Count();
+        }
+        if(t.NameIsUniqeSubUpd(this.subscribeName)){
+            t.SubscribeToUpdate(this.subscribeName,()=>{
+               this.LoadAdversment();
+            })                    
+        } 
+        return res; 
       }
 
       /** 
@@ -329,44 +298,12 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
       private async LoadAdversment():Promise<void>{
         let td =0, tw=0;
         try{
-            const res = await this.LoadToWeek();
-            if(res){
-                const ar = res as number[];
-                if(ar.length){
-                    tw=ar.length;
-                }else{
-                    const tid =res as number;
-                    if(!isNaN(tid)){
-                        tw=1;
-                    }else{
-                        tw=0;
-                    }
-                }
-            }else{
-                tw=0;
-            }
-            
+            tw = await this.LoadToWeek();
         }catch{
             tw=NaN;
         }
         try{
-            const res = await this.LoadToDay();
-            if(res){
-                const ar = res as number[];
-                if(ar.length){
-                    td=ar.length;
-                }else{
-                    const tid =res as number;
-                    if(!isNaN(tid)){
-                        td=1;
-                    }else{
-                        td=0;
-                    }
-                }
-            }else{
-                td=0;
-            }
-            
+            td = await this.LoadToDay();                      
         }catch{
             td=NaN;
         }
