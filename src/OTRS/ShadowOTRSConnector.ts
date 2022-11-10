@@ -1,4 +1,5 @@
 import { ISession } from "@CHSUVladimir/otrs-connector";
+import { IQueue, IQueueForm, IQueueTree } from "../Queues";
 import { IOTRSSettings} from "./OTRSConnector";
 
 export default class ShadowOTRSConnector{
@@ -62,7 +63,7 @@ export default class ShadowOTRSConnector{
     */
     public static set Session(v:ISession){
     this.session=v;
-}
+    }
 
     /**
     * @property {ISession} Набор настроек (логин пароль) для подключения к OTRS
@@ -74,7 +75,7 @@ export default class ShadowOTRSConnector{
     /**
      * @property {IOTRSSettings} Набор настроек для работы с OTRS (типы заявок и пр.)
      */
-     public static set Settings(s:IOTRSSettings){
+    public static set Settings(s:IOTRSSettings){
         this.settings=s;
     }
 
@@ -112,5 +113,96 @@ export default class ShadowOTRSConnector{
     public static get AdversmentTypes():string[]{
         return this.settings.AdversmentTIDs;
     } 
+
+    /**
+     * Хранилище очередей
+     */
+    private static queues:IQueue[]=[];
+
+    /**
+     * при установке значения производит перестроение дерева очередей
+     * @property {IQueue[]}  Значения очередей (установка получение)
+     */
+    public static set Queues(v:IQueue[]){
+        this.queues = v;
+        this.rebuildTree();
+    }
+
+    /**
+     * @returns {IQueue[]} набор очередей заданные при конфигурации
+     */
+    public static get Queues():IQueue[]{
+        return this.queues;
+    }
+
+    /**
+     * Хранлище дерева очередей
+     */
+    private static queueTree:IQueueTree[]=[];
+
+    /**
+     * @returns {IQueueTree[]} набор очередей, являющихся корнем со всеми ветвлениями
+     */
+    public static get QueueTree():IQueueTree[]{
+        return this.queueTree;
+    }
+
+    /**
+     * Хранилище форм заполнения
+     */
+    private static forms:IQueueForm[]=[];
+
+    /**
+     * при установке значения производит перестроение дерева очередей
+     * @property {IQueueForm[]} Набор форм заполнения
+     */
+    public static set Forms(v:IQueueForm[]){
+        this.forms=v;
+        this.rebuildTree();
+    }
+
+    /**
+     * @returns {IQueueForm[]} набор форм заполенния установленных в системе
+     */
+    public static get Forms():IQueueForm[]{
+        return this.forms;
+    }
+
+    /**
+     * производит формирование дочерних узлов для заданого корня
+     * @param {IQueueTree} root Корень для которого необходимо установить все дочерние контролы
+     */
+    private static rebuildBranch(root:IQueueTree):void{
+        this.queues.filter(m=>m.ParentId === root.QueueId).forEach(m=>{
+            const ch:IQueueTree={
+                QueueId:m.Id,
+                Childrens:[],
+                Forms:this.forms.filter(f=>f.QueueId===m.Id),
+            };
+            root.Childrens.push(ch);
+        });
+        root.Childrens.forEach(b=>{
+            this.rebuildBranch(b);
+        });
+    }
+
+    /**
+     * Принудительное перестроение дерева очередей
+     */
+    private static rebuildTree():void{
+        const roots:IQueueTree[]=[];
+        this.queues.filter(m=>!m.ParentId).forEach(m=>{
+            const root:IQueueTree={
+                QueueId:m.Id,
+                Childrens:[],
+                Forms:this.forms.filter(f=>f.QueueId===m.Id),
+            };
+            roots.push(root);
+        });
+        roots.forEach(r=>{
+            this.rebuildBranch(r);
+        });
+        this.queueTree=roots;
+    }
 
 }

@@ -1,4 +1,5 @@
 import { ISession, OTRSSession, OTRSTicketCreate, OTRSTicketGet, OTRSTicketSearch, OTRSTicketUpdate } from "@CHSUVladimir/otrs-connector";
+import { IQueue, IQueueForm } from "../Queues";
 import ShadowOTRSConnector from "./ShadowOTRSConnector";
 
 
@@ -104,6 +105,46 @@ export default class OTRSConnector{
      */
     public static set Settings(s:IOTRSSettings){
         ShadowOTRSConnector.Settings=s;
+    }
+
+    /**
+     * Загружает данные расположенные по адресу (может в том числе получать данные от апи или из файла)
+     * @param url Адрес где расположены данные об очередях
+     */
+    public static LoadQueuesFromURL(url:string){
+        fetch(url)
+            .then(function(response) {
+                response.json().then(function(text) {
+                    ShadowOTRSConnector.Queues=text;
+                });
+            });
+    }
+
+    /**
+     * Загружает данные расположенные по адресу (может в том числе получать данные от апи или из файла)
+     * @param url Адрес где расположены данные о формах заполнения
+     */
+    public static LoadFormsFromURL(url:string){
+        fetch(url)
+            .then(function(response) {
+                response.json().then(function(text) {
+                    ShadowOTRSConnector.Forms=text;
+                });
+            });
+    }
+
+    /**
+     * Устанавливает значение очередей
+     */
+    public static set Queues(v:IQueue[]){
+        ShadowOTRSConnector.Queues=v;
+    }
+
+    /**
+     * Устанвливает данные форм заполнения
+     */
+    public static set Forms(v:IQueueForm[]){
+        ShadowOTRSConnector.Forms=v;
     }
 
     
