@@ -98,24 +98,24 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
     }
 
     private UnSubscribe():void{
-        const ta = StoryManager.TicketAllIds;
+        const ta = StoryManager.TicketsIds.TicketAllIds;
         if(!ta.NameIsUniqeSubUpd(this.subscribeName)){
             ta.UnSubscribeToUpdate(this.subscribeName);
         }
-        const to = StoryManager.TicketOpenIds;
+        const to = StoryManager.TicketsIds.TicketOpenIds;
         if(!to.NameIsUniqeSubUpd(this.subscribeName)){
             to.UnSubscribeToUpdate(this.subscribeName);
         }
 
-        const ts = StoryManager.TicketSuccessIds;
+        const ts = StoryManager.TicketsIds.TicketSuccessIds;
         if(!ts.NameIsUniqeSubUpd(this.subscribeName)){
             ts.UnSubscribeToUpdate(this.subscribeName);
         }
-        const atd = StoryManager.AdvTodayIds;
+        const atd = StoryManager.Adversment.AdvTodayIds;
         if(!atd.NameIsUniqeSubUpd(this.subscribeName)){
             atd.UnSubscribeToUpdate(this.subscribeName);
         }
-        const atw = StoryManager.AdvToWeekIds;
+        const atw = StoryManager.Adversment.AdvToWeekIds;
         if(!atw.NameIsUniqeSubUpd(this.subscribeName)){
             atw.UnSubscribeToUpdate(this.subscribeName);
         }
@@ -141,7 +141,7 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
        */
       private async LoadAllTickets():Promise<void>{
         try{
-            const t = StoryManager.TicketAllIds;
+            const t = StoryManager.TicketsIds.TicketAllIds;
             if(t.FirstLoadStarted){
                 this.setState({ALL:{
                     load:false,
@@ -156,7 +156,7 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
             }    
             if(t.NameIsUniqeSubUpd(this.subscribeName)){
                 t.SubscribeToUpdate(this.subscribeName,()=>{
-                    const tt =StoryManager.TicketAllIds;
+                    const tt =StoryManager.TicketsIds.TicketAllIds;
                     this.setState({ALL:{
                         load:false,
                         count:tt.Count()
@@ -177,7 +177,7 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
        */
       private async LoadOpenTickets():Promise<void>{
         try{
-            const t = StoryManager.TicketOpenIds;
+            const t = StoryManager.TicketsIds.TicketOpenIds;
             if(t.FirstLoadStarted){
                 this.setState({Open:{
                     load:false,
@@ -192,7 +192,7 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
             }
             if(t.NameIsUniqeSubUpd(this.subscribeName)){
                 t.SubscribeToUpdate(this.subscribeName,()=>{
-                    const tt =StoryManager.TicketOpenIds;
+                    const tt =StoryManager.TicketsIds.TicketOpenIds;
                     this.setState({Open:{
                         load:false,
                         count:tt.Count()
@@ -212,7 +212,7 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
        */
       private async LoadSuccessTickets():Promise<void>{
         try{
-            const t = StoryManager.TicketSuccessIds;
+            const t = StoryManager.TicketsIds.TicketSuccessIds;
             if(t.FirstLoadStarted){
                 this.setState({Success:{
                     load:false,
@@ -227,7 +227,7 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
             }
             if(t.NameIsUniqeSubUpd(this.subscribeName)){
                 t.SubscribeToUpdate(this.subscribeName,()=>{
-                    const tt =StoryManager.TicketSuccessIds;
+                    const tt =StoryManager.TicketsIds.TicketSuccessIds;
                     this.setState({Success:{
                         load:false,
                         count:tt.Count()
@@ -255,7 +255,7 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
        * @returns {Promise<number|number[]>} идентификаторы заявок
        */
       private async LoadToDay():Promise<number>{
-        const t = StoryManager.AdvTodayIds;
+        const t = StoryManager.Adversment.AdvTodayIds;
         let res=-1;
         if(t.FirstLoadStarted){
             res= t.Count();
@@ -276,7 +276,7 @@ export default class TypesOfTickets extends React.Component<ITypeOfTickets, ISta
        * @returns {Promise<number|number[]>} идентификаторы заявок
        */
       private async LoadToWeek():Promise<number>{
-        const t = StoryManager.AdvToWeekIds;
+        const t = StoryManager.Adversment.AdvToWeekIds;
         let res=NaN;
         if(t.FirstLoadStarted){
             res= t.Count();

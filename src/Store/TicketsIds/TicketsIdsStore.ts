@@ -41,6 +41,15 @@ export default class TicketIdsStore extends Store<number>{
         }
     }
 
+    protected setTop5SeachTerms():void{
+        this.setAllSeachTerms();        
+        const st =this.ticketSearch.SearchTerms;  
+        st.StateIDs=undefined;
+        st.SortBy=["Changed"];
+        st.Limit=5; 
+        console.error("not implementation yet!");
+    }
+
     public Count():number{
         return this.Buffer.length;
     }
