@@ -11,7 +11,7 @@ export default class TicketIdsStore extends Store<number>{
         st.SessionID = OTRSSession.SessionId();  
         st.CustomerUserLogin =[ShadowOTRSConnector.Session.CustomerUserLogin];
         st.TypeIDs = ShadowOTRSConnector.StandartBids;
-        st.Limit=10000;
+        st.Limit=10000;        
     }
 
     protected setOpenSeachTerms():void{
@@ -47,7 +47,7 @@ export default class TicketIdsStore extends Store<number>{
         st.StateIDs=undefined;
         st.SortBy=["Changed"];
         st.Limit=5; 
-        console.error("not implementation yet!");
+        
     }
 
     public Count():number{

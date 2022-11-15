@@ -1,12 +1,10 @@
 import React from "react";
 import ReactDOM from 'react-dom/client';
-import {Globals, DataType} from 'csstype';
 import styles from '../../Styles.module.scss';
 import Bar from "./Bar";
 import TicketAdd from "./TicketAdd";
 import QueueFrame from "../../Queues/QueueFrame";
-
-export type CssColor=Globals | DataType.Color;
+import { CssColor } from "../../svg";
 
 export interface IColorIcon{
     Bar?:CssColor;

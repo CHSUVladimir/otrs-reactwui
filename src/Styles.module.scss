@@ -130,9 +130,8 @@
   }
 
   .typeOfTickets{
-    width: calc(100% - 6.25em);
+    width: calc(100% - 2.25em);
     display: flex;
-    margin-left: 4em;
     box-shadow: 0 2px 0 rgba(90,97,105,.11),0 4px 8px rgba(90,97,105,.12),0 10px 10px rgba(90,97,105,.06),0 7px 70px rgba(90,97,105,.1);
     border-radius: .5em;
     border: 1px solid rgba(0,0,0,.125);
@@ -350,4 +349,766 @@ text-shadow:0 1px 1px rgba(0,0,0,.3);
     }
     
   }
+}
+
+.lastBids{
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin-right: 15px;
+  margin-left: 15px;
+  line-height: 1.5;
+  text-align: left;
+  min-width: 20em;
+  min-height: 32em;
+  max-width: 90em;
+  flex-grow: 100; 
+  position: relative;
+  margin-bottom: 1.5em !important; 
+  font-size: 1.15em;
+  order:2;
+  &::after &::before{
+    box-sizing: border-box;
+  }
+  .col {      
+    flex-basis: 0;     
+    flex-grow: 1;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;      
+    box-shadow: 
+      0 2px 0 rgba(90,97,105,.11),
+      0 4px 8px rgba(90,97,105,.12),
+      0 10px 10px rgba(90,97,105,.06),
+      0 7px 70px rgba(90,97,105,.1);
+    background-color: transparent;
+    border: none;               
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .5em;
+    .header{
+      background-color: transparent;
+      margin: 0.35em;
+      font-size: 1.5em;
+      font-weight: bold;
+      font-style: oblique;
+      padding-left: 0.5em;
+    }
+    table{
+      text-align: center !important;
+      padding-bottom: 1em !important;
+      flex: 1 1 auto;
+      background-color: transparent;
+      margin-bottom: 1em !important;
+      width: 100%;        
+      border-collapse: collapse;
+      thead{
+        background-color: #fbfbfb !important;
+        th{
+          vertical-align: bottom;
+          border-bottom: 1px solid #dee2e6;
+          padding: .75rem;
+          border-top: 1px solid #dee2e6;
+        }
+      }
+      tbody{
+        tr{
+          cursor:pointer;
+          &:hover{
+            background-color: lightgreen;              
+          }
+          td{
+            padding: .75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+          }
+        }
+       
+      }
+    }
+  }
+}
+
+.menu.open{
+  width: 6em;      
+  min-height: 50vh;
+  border: 1px solid rgb(3, 120, 124);
+  box-shadow: 0 2px 5px rgba(1, 120, 124, .25);    
+  background: aliceblue;  
+  transition: 0.5s;  
+  overflow-y: auto;
+  font-size: 2em;
+  .hamburger{
+    right:  3px;
+    left: calc(100% - 1.5em - 1px);
+    background-size: calc(100% - 3px) 0.2em;
+    transform:rotate(180deg);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, .2);
+    &::before {
+      top: 0.4em;
+      right:-0.075em;
+      width: 0.85em;
+      transform:rotate(-135deg);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0);
+    }
+
+    &::after {
+      top: 0.85em;
+      left:0.75em;
+      width: 0.8em;
+      transform:rotate(-45deg);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0);
+    }
+
+  }
+  .title{
+    display: block;
+    transition: 0.5s; 
+    left: unset;
+    color: unset;
+    top: unset;
+    padding: unset;
+    width: 100%;
+  }
+  .circlePlus{
+    left:0.55em;
+    width: 1.5em;
+    height: 1.5em;
+    transition: 0.5s; 
+  }
+  .circleMyBids{
+    left:0.55em;
+    width: 1.5em;
+    height: 1.5em;
+    transition: 0.5s;
+    top: 3em;
+  }
+  .knowledgeBase{
+    left:0.55em;
+    width: 1.5em;
+    height: 1.5em;
+    transition: 0.5s;
+    top: 3em;
+  }
+ .icon{
+  margin-left: 0.55em;
+  height: 4em;
+  width: calc(100% - 0.55em);
+   svg{
+     width: 1.75em;
+     height: 1.75em;
+     margin-top: 0.2em;      
+   }  
+   &:hover{
+    .title{        
+      left: unset;
+      background: unset;  
+      padding: unset;
+    }
+   }        
+ }
+}
+
+.mainPallete{
+  min-height: 80vh;
+  width: 100%;    
+  position: relative;
+  display: flex;  
+  padding-bottom: 1em;      
+  .newMessadge{
+    position: relative;
+    &::after {
+      content: "!";
+      background-color: #ffe600;
+      font-weight: 700;
+      font-size: 1.08em;
+      line-height: 1.08em;
+      text-align: center;
+      height: 1.1em;
+      width: 1.1em;
+      border-radius: 50%;
+      position: absolute;
+      right: 0.5em;
+      z-index: 5;
+    }
+  }
+  
+  .lastBids{
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin-right: 15px;
+    margin-left: 15px;
+    line-height: 1.5;
+    text-align: left;
+    min-width: 20em;
+    min-height: 32em;
+    max-width: 90em;
+    flex-grow: 100; 
+    position: relative;
+    margin-bottom: 1.5em !important; 
+    font-size: 1.15em;
+    order:2;
+    &::after &::before{
+      box-sizing: border-box;
+    }
+   
+  }
+  .knowledgeCard{
+    box-shadow: 
+    0 2px 0 rgba(90,97,105,.11),
+    0 4px 8px rgba(90,97,105,.12),
+    0 10px 10px rgba(90,97,105,.06),
+    0 7px 70px rgba(90,97,105,.1);
+    border: none;
+    border-radius: .5em;
+    position: relative;
+    display: inline-block;    
+    word-wrap: break-word;
+    background-clip: border-box;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    line-height: 1.5;
+    text-align: left;
+    margin-top: 0.25em;
+    width: calc(100% - 90em);
+    min-width: 30em;
+    margin-left: 1.25em;
+    min-height: 32em;
+    flex-grow: 4;
+    top: -0.3em;
+    margin-top: 0.25em;
+    border: 1px solid rgba(0,0,0,.125);
+    order:3;
+    padding-top: 1.25em;
+    h3{
+      margin-left: 1.25em;
+      margin-top: 0.7em;
+      font-size: 2em;
+    }
+    img{
+      width:15em;
+      position: relative;
+      left: calc(50% - 7.5em);
+      height: 15em;
+    }
+    .excel{
+      &::after{
+        content: "Excel";
+        width: 4em;
+        height: 1.5em;
+        border-radius: 1.85em;
+        position: absolute;
+        left: calc(50% - 3.25em);
+        padding: .375em .5em;
+        color: #fff;
+        text-decoration: none;
+        background-color: #007bff;
+        text-transform: uppercase;
+        font-size: 45%;
+        font-weight: 500;
+        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+        text-align: center;
+        z-index: 10;
+        top: 7.5em;        
+      }     
+    }
+    .tagSpan {
+      height: 1.5em;
+      border-radius: 1.85em;
+      position: absolute;
+      left: calc(50% - 2.75em);
+      padding: .375em 0.85em;
+      color: #fff;
+      text-decoration: none;
+      background-color: #007bff;
+      text-transform: uppercase;
+      font-weight: 500;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+      text-align: center;
+      z-index: 10;
+      top: 7em;
+    }
+    .learnMoreLink{
+      color: #fff;
+      text-shadow: 0 1px 1px rgba(0,0,0,.4);
+      background-color: #239fdb;
+      box-shadow: 0 2px 2px rgba(0,0,0,.05), inset 0 -2px 0 rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.3);
+      border: 1px solid #1682b6;
+      min-width: 6em;
+      display: inline-block;
+      text-align: center;
+      height: 1.5em;
+      border-radius:0.75em;
+      left: calc(50% - 3em);
+      position: relative;
+      &:hover {
+        background-color: #2ca8e4;
+      }
+      font-size: 1.25em;
+      font-weight: bold;
+      padding: 0.25em;
+    }
+  }
+
+ 
+
+  .KBAddition{
+    position: relative;
+    top:2em;
+
+  }
+
+  .KnowledgeBaseView{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    .KnowledgeCategory{
+      display: inline-block;      
+      margin: 0.75em;
+      padding: 1em;
+      cursor: pointer;
+      box-shadow: 0 2px 0 rgba(90,97,105,.11),0 4px 8px rgba(90,97,105,.12),0 10px 10px rgba(90,97,105,.06),0 7px 70px rgba(90,97,105,.1);
+      border-radius: .5em;
+      position: relative;      
+      background-clip: border-box;
+      flex-grow: 1;
+      min-height: 10em;
+      height: calc(100% - 80vh);
+      img{
+        min-width: 5em;
+        max-width: 30em;
+        min-height: 5em;
+        max-height: 30em;
+      }
+      p{
+        font-size: 1.75em;
+      }
+    }
+    .tagSpan {
+      top: 0.75em !important;
+    }
+    .knowledgeCTitle{
+      position: absolute;
+      top: -1.25em;      
+      right: 2em;
+    }
+    .knowledgeCard{
+      min-width: 20em;
+      padding-top: 2em;
+      .learnMoreLink{
+        position: absolute;
+        bottom: 1.25em;
+        text-decoration: underline;
+        background-color: unset;
+        border: unset;
+        box-shadow: unset;
+        color: unset;
+        border-radius: unset;
+      }
+      .edit{
+        font-size: 1.5em;
+        color: #2c6c80;
+        cursor: pointer;
+        position: absolute;
+        top: 0.25em;
+        right: 0.25em;
+      }
+    }
+
+    .activitySpan{
+      font-size: .95em;
+      color: #2c6c80;
+      position: absolute;
+      top: .25em;
+      left: .25em;
+    }
+    .notActive{
+      color:#fd0220 !important;
+    }
+
+    
+  }
+  
+  .KBmenu{
+    display: flex;
+    color: #2c6c80;    
+    width: 100%;
+    position: absolute;
+    font-size: 2em;
+    margin-left: calc(2.25em + 2px);
+    .icon{
+      margin-left: 0.25em;
+      cursor: pointer;
+    }
+  }
+}
+
+.workPallete{
+  text-align: center; 
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;    
+  justify-content: center;
+  width: calc(100% - 4em);
+  margin-left: calc(4em + 2px);
+  .col {      
+    flex-basis: 0;     
+    flex-grow: 1;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;      
+    box-shadow: 
+      0 2px 0 rgba(90,97,105,.11),
+      0 4px 8px rgba(90,97,105,.12),
+      0 10px 10px rgba(90,97,105,.06),
+      0 7px 70px rgba(90,97,105,.1);
+    background-color: transparent;
+    border: none;               
+    display: flex;
+    flex-direction: column;
+    min-width: 14em;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .5em;
+    .header{
+      background-color: transparent;
+      margin: 0.35em;
+      font-size: 1.5em;
+      font-weight: bold;
+      font-style: oblique;
+      padding-left: 0.5em;
+    }
+    table{
+      text-align: center !important;
+      padding-bottom: 1em !important;
+      flex: 1 1 auto;
+      background-color: transparent;
+      margin-bottom: 1em !important;
+      width: 100%;        
+      border-collapse: collapse;
+      thead{
+        background-color: #fbfbfb !important;
+        th{
+          vertical-align: bottom;
+          border-bottom: 1px solid #dee2e6;
+          padding: .75rem;
+          border-top: 1px solid #dee2e6;
+        }
+      }
+      tbody{
+        tr{
+          cursor:pointer;
+          &:hover{
+            background-color: lightgreen;              
+          }
+          td{
+            padding: .75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+          }
+        }
+       
+      }
+    }
+  }
+  h1{
+    color: black;
+    font-size: 3em;
+  }
+
+  h2{
+    color: black;
+    font-size: 2em;
+  }
+  h3{
+    color: black;
+    font-size: 1.5em;
+  }
+  .anonsPallete{      
+    margin-bottom: 1.25em;
+    border-radius: .5em;
+    display: inline-flex;
+    flex-direction: column;
+    min-height: 32em;
+    box-shadow: 0 2px 0 rgba(90,97,105,.11),0 4px 8px rgba(90,97,105,.12),0 10px 10px rgba(90,97,105,.06),0 7px 70px rgba(90,97,105,.1);      
+    flex-grow: 1;
+    margin-left: 2em;
+    max-width: 20em;
+    min-width: 18em;
+    border: 1px solid rgba(0,0,0,.125);   
+    order:1;           
+      h3{
+        font-size: 1.5em;
+        border-bottom: 4px solid;          
+        border-image-slice: 10;         
+        border-image-source: repeating-linear-gradient(
+          -45deg,
+          #f9d92c,
+          #f9d92c 8px,
+          #fd0220 8px,
+          #fd0220 16px);
+          font-weight: bold;
+      }
+          
+    .anons{        
+      text-shadow: 0 1px 1px rgba(0,0,0,.4);              
+      display: inline-block;  
+      overflow-y: auto;         
+      height: 100%;   
+      max-height: 27em;          
+      width: 100%;        
+        .event{
+          display: flex;
+          flex-wrap: wrap;
+          border: 1px solid rgba(0,0,0,.125);
+          box-shadow: 
+          0 2px 2px rgba(0,0,0,.05), 
+          inset 0 -2px 0 rgba(0,0,0,.08), 
+          inset 0 1px 0 rgba(255,255,255,.3);
+          .timeLine{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0.2em;
+            font-weight: bold;
+            font-size: 1.15em;
+          }
+        }    
+    }
+  }
+  .myBidsPallete{
+    display: flex;      
+    margin-left:2em;
+    width: 100%;         
+    box-shadow: 0 2px 0 rgba(90,97,105,.11),0 4px 8px rgba(90,97,105,.12),0 10px 10px rgba(90,97,105,.06),0 7px 70px rgba(90,97,105,.1);
+    border-radius: .5em;              
+    border: 1px solid rgba(0,0,0,.125);  
+    margin-bottom: 1.25em;   
+    padding-right: 0.75em; 
+    &::after &::before{
+      box-sizing: border-box;
+    }
+    &:last-child {
+      margin-right: 0.75em;
+    }
+  }
+
+  .TicketsPanel{
+    width: 100%;
+    min-height: 15em;
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin-right: 15px;
+    margin-left: 15px;
+    line-height: 1.5;
+    text-align: left;
+    flex-grow: 100;
+    position: relative;
+    margin-bottom: 1.5em !important;
+    font-size: 1.15em;
+    order: 2;
+    box-shadow: 0 2px 0 rgba(90,97,105,.11),0 4px 8px rgba(90,97,105,.12),0 10px 10px rgba(90,97,105,.06),0 7px 70px rgba(90,97,105,.1);
+    background-color: transparent;
+    flex-direction: column;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .5em;
+    .header{
+      background-color: transparent;
+      margin: .35em;
+      font-size: 1.5em;
+      font-weight: 700;
+      font-style: oblique;
+      padding-left: .5em;
+    }
+    table {
+      text-align: center !important;
+      padding-bottom: 1em !important;        
+      flex: 1 1 auto;
+      background-color: transparent;
+      margin-bottom: 1em !important;
+      width: 100%;
+      border-collapse: collapse;
+      thead {
+        background-color: #fbfbfb !important;
+        th {
+          vertical-align: bottom;
+          border-bottom: 1px solid #dee2e6;
+          padding: .75rem;
+          border-top: 1px solid #dee2e6;
+          position: relative;
+          .Filter{
+            position: absolute;
+            left: 0.75em;
+            cursor:"pointer";
+            font-size:2em;
+          }
+        }
+      }
+      tbody{
+      .NoData{
+          cursor:progress;
+         &:hover {
+          background-color: unset;
+          }
+        }
+        tr {
+          cursor: pointer;
+          &:hover {
+            background-color: #90ee90;
+          }
+        }
+        .paginationRow{
+          &:hover {
+            background-color: unset;
+            }
+        }
+      }
+    }
+  }
+  
+  .AdsToDayPanel{
+    display: inline-flex;
+    flex-wrap: wrap;
+    margin-right: 15px;
+    margin-left: 15px;
+    line-height: 1.5;
+    text-align: left;
+    min-width: 20em;
+    min-height: 32em;      
+    flex-grow: 100; 
+    position: relative;
+    margin-bottom: 1.5em !important; 
+    font-size: 1.15em;
+    order:2;
+    box-shadow: 
+      0 2px 0 rgba(90,97,105,.11),
+      0 4px 8px rgba(90,97,105,.12),
+      0 10px 10px rgba(90,97,105,.06),
+      0 7px 70px rgba(90,97,105,.1);
+    background-color: transparent;
+    border: none;   
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .5em;  
+    overflow: auto;  
+    max-width: 60%;
+    &::after &::before{
+      box-sizing: border-box;
+    }
+    h2{
+      width: 100%;
+      text-align: center;
+    }
+    .Ads{
+      width: calc(50% - 1.25em);
+      box-shadow: 0 2px 0 rgba(90,97,105,.11),0 4px 8px rgba(90,97,105,.12),0 10px 10px rgba(90,97,105,.06),0 7px 70px rgba(90,97,105,.1);
+      border-radius: .5em;
+      position: relative;
+      display: inline-block;
+      word-wrap: break-word;
+      background-clip: border-box;
+      line-height: 1.5;
+      margin-left: 0.5em;
+      max-width: 45em;
+      margin-bottom: 1em;
+      padding-bottom: 2.25em;
+      max-height: 45em;        
+      
+      h3{
+        width: 100%;
+        text-align: center;
+        margin: unset;
+      }
+      .dateTimePanel{
+        position: absolute;
+        display: inline-block;
+        bottom: 0.5em;
+        width: 100%;
+        left: 0.25em;
+      }
+      span{
+        padding: 0.25em;
+      }
+      iframe{
+        width: calc(100% - 0.5em);
+        border: unset;
+        height: calc(100% - 3.75em);
+        padding: 0.25em;
+      }
+    }
+  }
+
+  .AdsToWeekPanel{
+    box-shadow: 0 2px 0 rgba(90,97,105,.11),0 4px 8px rgba(90,97,105,.12),0 10px 10px rgba(90,97,105,.06),0 7px 70px rgba(90,97,105,.1);
+    border-radius: .5em;
+    position: relative;
+    display: inline-block;
+    word-wrap: break-word;
+    background-clip: border-box;
+    line-height: 1.5;
+    text-align: left;
+    width: calc(100% - 90em);
+    min-width: 30em;
+    margin-left: 1.25em;
+    min-height: 32em;
+    flex-grow: 4;
+    top: -.3em;
+    margin-top: .25em;
+    border: 1px solid rgba(0,0,0,.125);
+    order: 3;
+    &::after &::before{
+      box-sizing: border-box;
+    }
+    h2{
+      width: 100%;
+      text-align: center;
+    }
+    .Ads{
+      width: calc(100% - 2em);
+      background-clip: border-box;
+      line-height: 2.5;
+      margin-left: 0.5em;
+      box-shadow: 0 2px 0 rgba(90,97,105,.11),0 4px 8px rgba(90,97,105,.12),0 10px 10px rgba(90,97,105,.06),0 7px 70px rgba(90,97,105,.1);
+      cursor: pointer;
+      border-radius: .5em;
+      padding: 0.5em;
+      &:hover {
+        background-color: #90ee90;
+      }
+    }
+  }
+}
+
+.ticketDialog{
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;  
+  h2{
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    margin: unset;
+  }
+  .ticketBody{
+    min-width: 30em;
+    width: calc((100% - 2em)/2);
+    height: fit-content;
+  }
+  .ticketArticles{
+    min-width: 30em;
+    width: calc((100% - 2em)/2);
+    height: fit-content;
+  }
+
 }

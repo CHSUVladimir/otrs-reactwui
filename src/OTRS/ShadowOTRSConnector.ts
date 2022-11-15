@@ -205,4 +205,14 @@ export default class ShadowOTRSConnector{
         this.queueTree=roots;
     }
 
+    private static _otersStatusEncoder:{[key:number]:string}={};
+
+    public static set StatusEncoder(v:{[key:number]:string}){
+        this._otersStatusEncoder=v;
+    }
+
+    public static get StatusEncoder():{[key:number]:string}{
+        return this._otersStatusEncoder;
+    }
+
 }

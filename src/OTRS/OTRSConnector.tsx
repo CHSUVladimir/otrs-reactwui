@@ -147,6 +147,12 @@ export default class OTRSConnector{
         ShadowOTRSConnector.Forms=v;
     }
 
+    /**
+     * Устанавливыает значения статусов
+     */
+    public static set StatusEncoder(v:{[key:number]:string}){
+        ShadowOTRSConnector.StatusEncoder=v;
+    }
     
 
 }
