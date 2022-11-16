@@ -2,7 +2,9 @@ import { IArticle, ITicket, OTRSSession } from "@CHSUVladimir/otrs-connector";
 import TicketGet from "@CHSUVladimir/otrs-connector/dist/esm/OTRS/TicketGet";
 import React from "react";
 import AwaitSpinner from "../../Elements/AwaitSpinner";
+import Pagination from "../../Elements/Pagination";
 import styles from "../../Styles.module.scss";
+import ArticleView from "./ArticleView";
 
 export interface IArticles{
     TicketID:number;
@@ -11,6 +13,7 @@ export interface IArticles{
 interface IState{
     Load:boolean;
     Articles?:IArticle[];
+    curentArticle?:IArticle;
 }
 
 export default class Articles extends React.Component<IArticles, IState>{
@@ -19,25 +22,27 @@ export default class Articles extends React.Component<IArticles, IState>{
         Load:true
     };
 
+    
+
     public render(): React.ReactNode {
-        if(!this.state.Load){
-            console.log(this.state.Articles);
+        if(!this.state.Load){            
             return (
                 <div className={styles.ticketArticles}>
-                {this.state.Articles?
-                    this.state.Articles.map(a=>{
-                        return (
-                            <div key={'art_'+a.ArticleID}>
-                                {a.ArticleID}
-                                <br/>
-                                {a.MimeType}
-                            </div>
-                        );
-                    })
+                {this.state.curentArticle?
+                    <ArticleView Article={this.state.curentArticle}/>
                 :
                     <span>Здесь пока ничего нет!</span>
-                }         
+                }    
+                <Pagination 
+                    Elements={this.state.Articles} 
+                    MaxPages={5}
+                    onSelect={(v)=>this.setState({curentArticle:v})}
+                    className={styles.pagination}
+                    pageClass={styles.paginationPage}
+                    pageOnSelectedClass={styles.active}
+                />     
                 </div>
+                
             );
         }else{
             return (
@@ -53,6 +58,9 @@ export default class Articles extends React.Component<IArticles, IState>{
        this.LoadArticles().then(); 
     }
 
+    /**
+     * @async загрузка заявки со всеми данными
+     */
     private async LoadArticles():Promise<void>{
         const tg = new TicketGet();
         const tc = tg.TicketConditions();
@@ -65,19 +73,25 @@ export default class Articles extends React.Component<IArticles, IState>{
         tc.Attachments=true;
         const res = await tg.GetTickets() as ITicket;
         if(res){
-            const ar = res.Article;
+            let ar = res.Article;
             if(ar){
                 if(ar.length){
-                    this.setState({Load:false, Articles:ar});
+                    ar=ar.filter(m=>m.IsVisibleForCustomer===1);
+                    this.setState({Load:false, Articles:ar, curentArticle:ar[0]});
                 }else{
                     const art = ar as unknown as IArticle;
-                    this.setState({Load:false, Articles:[art]});
+                    if(art.IsVisibleForCustomer===1){
+                        this.setState({Load:false, Articles:[art], curentArticle:art});
+                    }else{
+                        this.setState({Load:false, Articles:undefined, curentArticle:undefined});
+                    }
+                    
                 }
             }else{
-                this.setState({Load:false, Articles:undefined});
+                this.setState({Load:false, Articles:undefined, curentArticle:undefined});
             }
         }else{
-            this.setState({Load:false, Articles:undefined});
+            this.setState({Load:false, Articles:undefined, curentArticle:undefined});
         }
     }
 }

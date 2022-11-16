@@ -964,12 +964,7 @@ text-shadow:0 1px 1px rgba(0,0,0,.3);
           &:hover {
             background-color: #90ee90;
           }
-        }
-        .paginationRow{
-          &:hover {
-            background-color: unset;
-            }
-        }
+        }        
       }
     }
   }
@@ -1103,12 +1098,74 @@ text-shadow:0 1px 1px rgba(0,0,0,.3);
   .ticketBody{
     min-width: 30em;
     width: calc((100% - 2em)/2);
-    height: fit-content;
+    height: calc(100% - 5em);
+    min-height: 30em;
+    margin-right: 0.75em;
   }
   .ticketArticles{
     min-width: 30em;
     width: calc((100% - 2em)/2);
-    height: fit-content;
+    height: calc(100% - 5em);
+    min-height: 30em;
+    margin-left: 0.75em;
   }
 
+}
+
+.pagination{
+  width: 100%;
+  padding: 0.25em;
+  text-align: center;
+  .paginationPage{
+    width: fit-content;
+    padding: 0.25em;
+    line-height: 1.25em;
+    height: 1.5em;
+    display: inline-flex;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    background-color: #35c1db;
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    box-shadow: 0 2px 2px rgba(0,0,0,.05),inset 0 -2px 0 rgba(0,0,0,.08),inset 0 1px 0 hsla(0,0%,100%,.3);
+    text-align: center;
+    font-size: 1.25em;
+    border-radius: .5em;
+    margin-left: .25em;
+    margin-bottom: .25em;
+    min-width: 1em;
+    &:hover {
+      background-color: #2ca8e4;
+    }
+    &:active{
+      position: relative;
+      top:2px;
+      background-color: #1f5169;
+    }
+  }
+  .paginationPage.active{
+    background-color: #48c253;
+    &:hover {
+      background-color: #55cc60 !important;
+    }
+    &:active{
+      background-color: #428f48;
+    }
+  }
+}
+
+.articleView{
+  width: 100%;
+  height: calc(100% - 2em);
+  overflow: auto;
+  h3{
+    text-align: center;
+    width: 100%;
+    font-weight: 600;
+  }
+
+  .article{
+    display: flow-root;
+  }
 }

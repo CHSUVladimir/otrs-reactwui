@@ -1,7 +1,6 @@
 import { ITicket, OTRSSession } from "@CHSUVladimir/otrs-connector";
 import TicketGet from "@CHSUVladimir/otrs-connector/dist/esm/OTRS/TicketGet";
 import React from "react";
-import ReactDOM from 'react-dom/client';
 import AwaitSpinner from "../../Elements/AwaitSpinner";
 import ShadowOTRSConnector from "../../OTRS/ShadowOTRSConnector";
 import StoryManager from "../../Store/0AStoryManager";
@@ -9,21 +8,28 @@ import styles from '../../Styles.module.scss';
 import LERow from "./LERow";
 
 export interface ITop5LastEdited{
-    mRoot:ReactDOM.Root;
 }
 
 interface IState{
+    /**
+     * Ожидание загрузки
+     */
     Await:boolean; 
+    /**
+     * Набор заявок для отображения
+     */
     Tickets:ITicket[];
 }
-
+//{}
 export default class Top5LastEdited extends React.Component<ITop5LastEdited, IState>{
 
     public state: Readonly<IState>={
         Await:true,
         Tickets:[]
     };
-
+    /**
+     * Имя для управления подписками
+     */
     private static subscribeName:Readonly<string>='Top5LastEdited';
 
     public render(): React.ReactNode {
@@ -50,7 +56,7 @@ export default class Top5LastEdited extends React.Component<ITop5LastEdited, ISt
                                 {
                                     this.state.Tickets.map(t=>{
                                         return (
-                                            <LERow Ticket={t} mRoot={this.props.mRoot} key ={"TicketLE_"+t.TicketID}/>                                            
+                                            <LERow Ticket={t} key ={"TicketLE_"+t.TicketID}/>                                            
                                         );
                                     }
                                     )
@@ -106,6 +112,9 @@ export default class Top5LastEdited extends React.Component<ITop5LastEdited, ISt
         }
     }
 
+    /**
+     * Загрузка данных с подпиской на обновление
+     */
     private async LoadData():Promise<void>{
         const man = StoryManager.TicketsIds.TicketTop5Ids;
         if(man.FirstLoadStarted){
@@ -119,6 +128,9 @@ export default class Top5LastEdited extends React.Component<ITop5LastEdited, ISt
         }
     }
 
+    /**
+     * Загрузка данных заявок
+     */
     private async LoadTickets(){
         const ltid = this.state.Tickets.map(t=>t.TicketID);
         const man = StoryManager.TicketsIds.TicketTop5Ids;

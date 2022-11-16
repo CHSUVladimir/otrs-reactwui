@@ -53,7 +53,7 @@ export default class App extends React.Component<IOTRS, IState>{
             ColorIcons={this.props.MenuSettings.ColorIcons}
             MenuColor ={this.props.MenuSettings.MenuColor}
           />
-          <MainView View={this.state.View} mRoot={this.props.Dialogs.MenuRoot}/>                    
+          <MainView View={this.state.View} />                    
         </div>
       );
     }else{      
