@@ -1,5 +1,12 @@
-import { HTMLInputTypeAttribute } from "react";
+import React, { HTMLInputTypeAttribute } from "react";
 import ReactDOM from 'react-dom/client';
+import DivElement from "./WorkPanel/StepElements/DivElement";
+import HElement from "./WorkPanel/StepElements/HElement";
+import InputElement from "./WorkPanel/StepElements/InputElement";
+import LabelElement from "./WorkPanel/StepElements/LabelElement";
+import MultiTicElement from "./WorkPanel/StepElements/MultiTicElement";
+import SelectElement from "./WorkPanel/StepElements/SelectElement";
+import TextAreaElement from "./WorkPanel/StepElements/TextAreaElement";
 
 export interface IQueue{
     Id:number;
@@ -115,4 +122,27 @@ export interface IQueueTree{
     QueueId:number;
     Childrens:IQueueTree[];
     Forms?:IQueueForm[];
+}
+
+export interface IPreviewElement{
+    Element:HTMLElement;
+    beNormal:boolean;
+}
+
+export interface ISafPreviewElement{
+    Safe:()=>IPreviewElement;
+}
+
+export function setUpElement(e:ISafeElement, Queue:IQueue, i:number, ref:React.RefObject<any>){
+    switch(e.Type){
+        case 'h': return (<HElement Element={e} Queue={Queue} key={i+'_'+e.Type} ref={ref}/>);
+        case 'label': return (<LabelElement Element={e} key={i+'_'+e.Type} ref={ref}/>)
+        case 'input': return (<InputElement Element={e} key={i+'_'+e.Type} ref={ref}/>);
+        case 'div': return (<DivElement Element={e} Queue={Queue} key={i+'_'+e.Type} ref={ref}/>);
+        case 'select': return (<SelectElement Element={e} key={i+'_'+e.Type}/>);
+        case 'textarea': return(<TextAreaElement Element={e} key={i+'_'+e.Type}/>);
+        case 'xTic': return (<MultiTicElement Element={e} Queue={Queue} key={i+'_'+e.Type}/>)
+        
+        default: return (<span key={i+'_'+e.Type}> {e.Type} </span>);
+    }
 }
